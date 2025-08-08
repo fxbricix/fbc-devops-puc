@@ -16,6 +16,8 @@ public class ConsultaDadosService {
                 .nome("José")
                 .sobrenome("Ficticio")
                 .materia("DEVOPS")
+                .universidade("Pontificia Universidade Catolica do Paraná - PUC PR")
+                .periodo(5)
                 .diaDaConsulta(LocalDateTime.now().format(formatter))
                 .build();
     }

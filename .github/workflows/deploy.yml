@@ -40,3 +40,21 @@ jobs:
         run: mvn clean install
       - name: Check deploy step (dry run)
         run: echo "Simulando deploy (dry run). Nenhum deploy será feito."
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: maven
+      - name: Build JAR
+        run: mvn -B package --file pom.xml
+      - name: Build Docker image
+        run: docker build -t devops-app:latest .
+      # Opcional: rodar o container para testar
+      # - name: Run Docker container
+      #   run: docker run --rm -p 8080:8080 devops-app:latest

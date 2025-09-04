@@ -63,7 +63,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Discord notification
-        uses: Ilshidur/action-discord@v2
+        uses: Ilshidur/action-discord@master
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message: "Workflow finalizado com sucesso!"

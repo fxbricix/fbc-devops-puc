@@ -64,6 +64,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Discord notification
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
           args: "Workflow finalizado com sucesso!"

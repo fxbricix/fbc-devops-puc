@@ -65,6 +65,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Discord notification
         uses: Ilshidur/action-discord@master
-        with:
+        env:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        with:  
           args: "[PULL REQUEST] - PR Validada com sucesso"

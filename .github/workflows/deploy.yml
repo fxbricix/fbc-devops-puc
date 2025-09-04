@@ -58,11 +58,12 @@ jobs:
       # Opcional: rodar o container para testar
       # - name: Run Docker container
       #   run: docker run --rm -p 8080:8080 devops-app:latest
-  discord: 
+  discord:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Discord Webhook
-        uses: johnnyhuy/actions-discord-git-webhook@main
+      - name: Discord notification
+        uses: Ilshidur/action-discord@master
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          args: "Workflow finalizado com sucesso!"

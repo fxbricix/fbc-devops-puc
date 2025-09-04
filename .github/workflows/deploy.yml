@@ -60,12 +60,11 @@ jobs:
       #   run: docker run --rm -p 8080:8080 devops-app:latest
   discord:
     runs-on: ubuntu-latest
+    needs: [build, delivery, docker]
     steps:
       - uses: actions/checkout@v4
-      - name: Discord notification on merge to main
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      - name: Discord notification
         uses: Ilshidur/action-discord@master
-        env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: "[DEVOPS} - Merge realizado na branch main!"
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          args: "[PULL REQUEST] - PR Validada com sucesso"

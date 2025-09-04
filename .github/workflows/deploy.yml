@@ -62,9 +62,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Discord notification
+      - name: Discord notification on merge to main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: Ilshidur/action-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
-          args: "Workflow finalizado com sucesso!"
+          args: "[DEVOPS} - Merge realizado na branch main!"

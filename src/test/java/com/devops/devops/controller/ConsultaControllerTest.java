@@ -14,6 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ConsultaController.class)
 class ConsultaControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -42,5 +43,42 @@ class ConsultaControllerTest {
                 .andExpect(jsonPath("$.universidade").value("Pontificia Universidade Catolica do Paraná - PUC PR"))
                 .andExpect(jsonPath("$.periodo").value(5))
                 .andExpect(jsonPath("$.diaDaConsulta").value("08/08/2025 17:01"));
+    }
+
+    @Test
+    void consultaEndpoint_deveRetornar404QuandoDadosNaoEncontrados() throws Exception {
+        when(consultaDadosService.consultaDados()).thenReturn(null);
+
+        mockMvc.perform(get("/consulta"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void consultaEndpoint_deveRetornar400QuandoServicoLancaExcecao() throws Exception {
+        when(consultaDadosService.consultaDados()).thenThrow(new IllegalArgumentException("Dados inválidos"));
+
+        mockMvc.perform(get("/consulta"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void consultaEndpoint_deveRetornarCamposCorretosNoJson() throws Exception {
+        DadosDTO mockDados = DadosDTO.builder()
+                .nome("Ana")
+                .sobrenome("Silva")
+                .materia("Engenharia")
+                .universidade("UFPR")
+                .periodo(8)
+                .build();
+
+        when(consultaDadosService.consultaDados()).thenReturn(mockDados);
+
+        mockMvc.perform(get("/consulta"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nome").value("Ana"))
+                .andExpect(jsonPath("$.sobrenome").value("Silva"))
+                .andExpect(jsonPath("$.materia").value("Engenharia"))
+                .andExpect(jsonPath("$.universidade").value("UFPR"))
+                .andExpect(jsonPath("$.periodo").value(8));
     }
 }
